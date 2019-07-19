@@ -11,6 +11,7 @@ public class SlotDTO {
 	public SlotDTO() {
 
 	}
+	
 
 	public SlotDTO(LocalDateTime from, LocalDateTime to) {
 		this.from = from;

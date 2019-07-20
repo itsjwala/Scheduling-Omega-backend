@@ -1,6 +1,7 @@
 package com.wissen.SmartInterviewProcess.services;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,13 +28,15 @@ public class AvailableSlotService {
 	private InterviewerRepository interviewerRepository;
 
 	@Transactional
-	public void addSlots(long interviewerId, List<SlotDTO> slots) throws NotFoundException {
+	public List<AvailableSlotDTO> addSlots(long interviewerId, List<SlotDTO> slots) throws NotFoundException {
 
 		Interviewer interviewer = interviewerRepository.findById(interviewerId).orElseThrow(() -> {
 
 			return new NotFoundException("Interviewer not found with id :" + interviewerId);
 		});
-
+		
+		List<AvailableSlotDTO> res = new ArrayList<>();
+		
 		for (SlotDTO slot : slots) {
 
 			AvailableSlot availableSlot = new AvailableSlot();
@@ -42,10 +45,11 @@ public class AvailableSlotService {
 			availableSlot.setToTimestamp(slot.getTo());
 			availableSlot.setInterviewer(interviewer);
 
-			availableSlotRepository.save(availableSlot);
+			AvailableSlot curr = availableSlotRepository.save(availableSlot);
+			res.add(new AvailableSlotDTO(curr));
 
 		}
-
+		return res;
 	}
 
 	@Transactional(readOnly = true)
@@ -91,6 +95,20 @@ public class AvailableSlotService {
 					return availableSlotDTO;
 				}).collect(Collectors.toList());
 
+	}
+	
+	@Transactional
+	public Long cancelSlot(long slotId) throws NotFoundException{
+		availableSlotRepository.findById(slotId).orElseThrow(() -> {
+			return new NotFoundException("Available slot not found with id :" + slotId);
+		});
+		
+		AvailableSlot availableSlot = availableSlotRepository.findById(slotId).get();
+		
+		availableSlot.setActive(false);
+		availableSlotRepository.save(availableSlot);
+		
+		return availableSlot.getId();
 	}
 
 }

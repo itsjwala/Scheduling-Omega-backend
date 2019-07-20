@@ -1,8 +1,19 @@
 package com.wissen.SmartInterviewProcess.dto;
 
+import com.wissen.SmartInterviewProcess.models.AvailableSlot;
+
 public class AvailableSlotDTO {
 	private long slotId;
 	private SlotDTO slot;
+	
+	public AvailableSlotDTO() {
+		
+	}
+	
+	public AvailableSlotDTO(AvailableSlot availableSlot ) {
+		this.slotId = availableSlot.getId();
+		this.slot = new SlotDTO(availableSlot.getFromTimestamp(), availableSlot.getToTimestamp());
+	}
 
 	public long getSlotId() {
 		return slotId;

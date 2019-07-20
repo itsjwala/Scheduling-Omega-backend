@@ -22,6 +22,9 @@ public interface ScheduleSlotRepository extends JpaRepository<ScheduleSlot, Long
 
 	@Query("select e from ScheduleSlot e where e.interviewer.id = :interviewer_id and e.active= :active and e.cancelled = :cancelled")
 	public List<ScheduleSlot> getAllByInterviewer(@Param("interviewer_id") long interviewerId,@Param("cancelled")boolean cancelled,@Param("active") boolean active);
+	
+	@Query("select e from ScheduleSlot e where e.hr.id= :hr_id and e.slot.fromTimestamp >= :from and e.slot.toTimestamp<= :to and e.active= :active and e.cancelled = :cancelled")
+	public List<ScheduleSlot> getAllBetweenByHr(@Param("hr_id")long hrId,@Param("from") LocalDateTime fromt, @Param("to") LocalDateTime tot,@Param("cancelled")boolean cancelled,@Param("active") boolean active);
 
 
 }

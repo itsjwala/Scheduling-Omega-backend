@@ -47,7 +47,7 @@ public class SlotController {
 	private ResponseEntity<?> viewSlots(@RequestParam String from, @RequestParam String to) {
 		
 		if(from.equals("undefined") || to.equals("undefined") || from.length() == 0 || to.length() == 0) {
-			return new ResponseEntity<>("Invalid time range", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("Invalid time range", HttpStatus.BAD_REQUEST);
 		}
 		
 		List<AvailableSlotForScheduleDTO> body = availableSlotService.getSlotsBetween(LocalDateTime.parse(from), LocalDateTime.parse(to));
@@ -70,6 +70,10 @@ public class SlotController {
 	
 	@GetMapping("/{id}/slots")
 	private ResponseEntity<?> interviewerSlots(@PathVariable Long id, @RequestParam String from, @RequestParam String to) {
+		
+		if(from.equals("undefined") || to.equals("undefined") || from.length() == 0 || to.length() == 0) {
+			return new ResponseEntity<>("Invalid time range", HttpStatus.BAD_REQUEST);
+		}
 		
 		List<AvailableSlotDTO> body;
 		try {

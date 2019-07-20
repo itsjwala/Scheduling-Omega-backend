@@ -41,7 +41,7 @@ public class ScheduleSlotService {
 	private EmployeeRepository employeeRepository;
 
 	@Transactional
-	public void ScheduleInterview(ScheduleSlotDTO scheduleSlotDTO) throws NotFoundException {
+	public long ScheduleInterview(ScheduleSlotDTO scheduleSlotDTO) throws NotFoundException {
 
 		ScheduleSlot scheduleSlot = new ScheduleSlot();
 
@@ -83,8 +83,7 @@ public class ScheduleSlotService {
 		scheduleSlot.setInterviewDescription(scheduleSlotDTO.getInterviewDescription());
 		scheduleSlot.setCandidate(scheduleSlotDTO.getCandidate());
 		
-		scheduleSlotRepository.save(scheduleSlot);
-
+		return scheduleSlotRepository.save(scheduleSlot).getSlot().getId();
 	}
 
 }

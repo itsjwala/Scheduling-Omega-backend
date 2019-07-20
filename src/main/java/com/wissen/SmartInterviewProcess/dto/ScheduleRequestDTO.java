@@ -2,7 +2,7 @@ package com.wissen.SmartInterviewProcess.dto;
 
 import com.wissen.SmartInterviewProcess.models.Candidate;
 
-public class ScheduleSlotDTO {
+public class ScheduleRequestDTO {
 
 	private long slotId;
 	private long interviewerId;

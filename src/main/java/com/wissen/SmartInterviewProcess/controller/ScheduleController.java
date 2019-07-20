@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wissen.SmartInterviewProcess.dto.ScheduleSlotDTO;
-import com.wissen.SmartInterviewProcess.dto.ScheduledDTO;
+import com.wissen.SmartInterviewProcess.dto.ScheduleRequestDTO;
+import com.wissen.SmartInterviewProcess.dto.ScheduleResponseDTO;
 import com.wissen.SmartInterviewProcess.services.ScheduleSlotService;
 
 import javassist.NotFoundException;
@@ -28,16 +28,16 @@ public class ScheduleController {
 	ScheduleSlotService scheduleSlotService;
 	
 	@PostMapping("/hrs/{id}/schedules")
-	private ResponseEntity<?> addSchedule(@PathVariable Long id, @RequestBody ScheduleSlotDTO scheduleSlotDTO) {
+	private ResponseEntity<?> addSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDTO scheduleSlotDTO) {
 		System.out.println(scheduleSlotDTO);
-		ScheduledDTO body = null;
+		ScheduleResponseDTO body = null;
 		try {
 			body = scheduleSlotService.ScheduleInterview(scheduleSlotDTO);
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<>(body, HttpStatus.OK);
+		return new ResponseEntity<>(body, HttpStatus.CREATED);
 		
 	}
 	
@@ -47,7 +47,7 @@ public class ScheduleController {
 			return new ResponseEntity<>("Invalid time range", HttpStatus.BAD_REQUEST);
 		}
 		
-		List<ScheduledDTO> body;
+		List<ScheduleResponseDTO> body;
 		try {
 			body = scheduleSlotService.getScheduleBetweenForHr(id, LocalDateTime.parse(from), LocalDateTime.parse(to));
 		} catch (NotFoundException e) {
@@ -62,7 +62,7 @@ public class ScheduleController {
 			return new ResponseEntity<>("Invalid time range", HttpStatus.BAD_REQUEST);
 		}
 		
-		List<ScheduledDTO> body;
+		List<ScheduleResponseDTO> body;
 		try {
 			body = scheduleSlotService.getScheduleBetweenForInterviewer(id, LocalDateTime.parse(from), LocalDateTime.parse(to));
 		} catch (NotFoundException e) {

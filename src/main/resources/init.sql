@@ -1,3 +1,4 @@
+drop database if exists smartinterviewdb;
 create database if not exists smartinterviewdb;
 use smartinterviewdb;
 

@@ -32,7 +32,7 @@ public class ScheduleController {
 		System.out.println(scheduleSlotDTO);
 		ScheduleResponseDTO body = null;
 		try {
-			body = scheduleSlotService.ScheduleInterview(scheduleSlotDTO);
+			body = scheduleSlotService.scheduleInterview(scheduleSlotDTO);
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}

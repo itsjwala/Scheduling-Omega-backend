@@ -12,12 +12,14 @@ import com.wissen.SmartInterviewProcess.dto.ScheduleRequestDTO;
 import com.wissen.SmartInterviewProcess.dto.ScheduleResponseDTO;
 import com.wissen.SmartInterviewProcess.dto.SlotDTO;
 import com.wissen.SmartInterviewProcess.models.AvailableSlot;
+import com.wissen.SmartInterviewProcess.models.Candidate;
 import com.wissen.SmartInterviewProcess.models.Employee;
 import com.wissen.SmartInterviewProcess.models.Interviewer;
 import com.wissen.SmartInterviewProcess.models.Level;
 import com.wissen.SmartInterviewProcess.models.ScheduleSlot;
 import com.wissen.SmartInterviewProcess.models.Technology;
 import com.wissen.SmartInterviewProcess.repository.AvailableSlotRepository;
+import com.wissen.SmartInterviewProcess.repository.CandidateRepository;
 import com.wissen.SmartInterviewProcess.repository.EmployeeRepository;
 import com.wissen.SmartInterviewProcess.repository.InterviewerRepository;
 import com.wissen.SmartInterviewProcess.repository.LevelRepository;
@@ -45,9 +47,12 @@ public class ScheduleSlotService {
 	private InterviewerRepository interviewerRepository;
 	@Autowired
 	private EmployeeRepository employeeRepository;
+	
+	@Autowired
+	private CandidateRepository candidateRepository;
 
 	@Transactional
-	public ScheduleResponseDTO ScheduleInterview(ScheduleRequestDTO scheduleSlotDTO) throws NotFoundException {
+	public ScheduleResponseDTO scheduleInterview(ScheduleRequestDTO scheduleSlotDTO) throws NotFoundException {
 
 		ScheduleSlot scheduleSlot = new ScheduleSlot();
 
@@ -88,7 +93,8 @@ public class ScheduleSlotService {
 		scheduleSlot.setSlot(availableSlot);
 
 		scheduleSlot.setInterviewDescription(scheduleSlotDTO.getInterviewDescription());
-		scheduleSlot.setCandidate(scheduleSlotDTO.getCandidate());
+		Candidate candidate = candidateRepository.save(scheduleSlotDTO.getCandidate());
+		scheduleSlot.setCandidate(candidate);
 
 		ScheduleSlot scheduled = scheduleSlotRepository.save(scheduleSlot);
 

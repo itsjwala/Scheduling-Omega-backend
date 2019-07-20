@@ -1,13 +1,13 @@
- insert into employee(email,name,phone_number,wissen_id,active) values('jigar.wala@wissen.com','jigar wala','8888888888','WT250',1);
- insert into employee(email,name,phone_number,wissen_id,active) values('sagar.ailani@wissen.com','sagar ailani','8888888888','WT251',1);
- insert into employee(email,name,phone_number,wissen_id,active) values('prithvi.morya@wissen.com','prithvi morya','8888888888','WT252',1);
- insert into employee(email,name,phone_number,wissen_id,active) values('anirudh.balakka@wissen.com','anirudh balakka','8888888888','WT253',1);
- insert into employee(email,name,phone_number,wissen_id,active) values('rishi.ghai@wissen.com','rishi ghai','8888888888','WT254',1);
- insert into employee(email,name,phone_number,wissen_id,active) values('suhaib.khan@wissen.com','suhaib khan','8888888888','WT255',1);
- insert into employee(email,name,phone_number,wissen_id,active) values('dheeraj.bhutani@wissen.com','dheeraj bhutani','8888888888','WT256',1);
- insert into employee(email,name,phone_number,wissen_id,active) values('nilesh.dahiphale@wissen.com','nilesh dahiphale','8888888888','WT257',1);
- insert into employee(email,name,phone_number,wissen_id,active) values('nilesh.dahiphale@wissen.com','nilesh dahiphale','8888888888','WT257',1);
- insert into employee(email,name,phone_number,wissen_id,active) values('rushabh.shah@wissen.com','rushabh shah','8888888888','WT258',1);
+ insert into employee(email,name,phone_number,wissen_id) values('jigar.wala@wissen.com','jigar wala','8888888888','WT250');
+ insert into employee(email,name,phone_number,wissen_id) values('sagar.ailani@wissen.com','sagar ailani','8888888888','WT251');
+ insert into employee(email,name,phone_number,wissen_id) values('prithvi.morya@wissen.com','prithvi morya','8888888888','WT252');
+ insert into employee(email,name,phone_number,wissen_id) values('anirudh.balakka@wissen.com','anirudh balakka','8888888888','WT253');
+ insert into employee(email,name,phone_number,wissen_id) values('rishi.ghai@wissen.com','rishi ghai','8888888888','WT254');
+ insert into employee(email,name,phone_number,wissen_id) values('suhaib.khan@wissen.com','suhaib khan','8888888888','WT255');
+ insert into employee(email,name,phone_number,wissen_id) values('dheeraj.bhutani@wissen.com','dheeraj bhutani','8888888888','WT256');
+ insert into employee(email,name,phone_number,wissen_id) values('nilesh.dahiphale@wissen.com','nilesh dahiphale','8888888888','WT257');
+ insert into employee(email,name,phone_number,wissen_id) values('mohit.shah@wissen.com','mohit shah','8888888888','WT258');
+ insert into employee(email,name,phone_number,wissen_id) values('rushabh.shah@wissen.com','rushabh shah','8888888888','WT259');
 
 
 

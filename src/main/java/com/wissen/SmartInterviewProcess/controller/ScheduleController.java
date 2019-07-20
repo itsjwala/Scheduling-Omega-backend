@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +28,8 @@ public class ScheduleController {
 	ScheduleSlotService scheduleSlotService;
 	
 	@PostMapping("/hrs/{id}/schedules")
-	private ResponseEntity<?> addSchedule(@PathVariable Long id, ScheduleSlotDTO scheduleSlotDTO) {
+	private ResponseEntity<?> addSchedule(@PathVariable Long id, @RequestBody ScheduleSlotDTO scheduleSlotDTO) {
+		System.out.println(scheduleSlotDTO);
 		ScheduledDTO body = null;
 		try {
 			body = scheduleSlotService.ScheduleInterview(scheduleSlotDTO);

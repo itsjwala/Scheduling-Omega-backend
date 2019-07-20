@@ -47,7 +47,7 @@ public class ScheduleSlotService {
 
 	@Transactional
 	public ScheduledDTO ScheduleInterview(ScheduleSlotDTO scheduleSlotDTO) throws NotFoundException {
-
+		
 		ScheduleSlot scheduleSlot = new ScheduleSlot();
 
 		Employee hr = employeeRepository.findById(scheduleSlotDTO.getHrId()).orElseThrow(() -> {

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wissen.SmartInterviewProcess.dto.FeedbackDTO;
 import com.wissen.SmartInterviewProcess.services.FeedbackService;
+import com.wissen.SmartInterviewProcess.services.MailService;
 
 import javassist.NotFoundException;
 
@@ -26,6 +27,9 @@ public class FeedbackController {
 	@Autowired
 	FeedbackService feedbackService;
 	
+	@Autowired
+	MailService mailService;
+	
 	@PostMapping("/{id}/schedules/feedback")
 	private ResponseEntity<?> addFeedback(@RequestBody FeedbackDTO feedbackDTO) {
 		Long body = -1L;
@@ -35,6 +39,7 @@ public class FeedbackController {
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
+				
 		return new ResponseEntity<>(body, HttpStatus.OK);
 	}
 	
@@ -46,7 +51,8 @@ public class FeedbackController {
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
-		
+		mailService.sendMail();
+
 		return new ResponseEntity<>(body, HttpStatus.OK);
 	}
 }

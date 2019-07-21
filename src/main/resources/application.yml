@@ -11,6 +11,19 @@ spring:
       ddl-auto: validate
     show-sql: true
     
+  mail: 
+    host: smtp.gmail.com
+    username: intvwscheduler@gmail.com
+    password: qzbqseyhkdlqdkjm
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    
+    
  
 #  profiles:
 #    active:

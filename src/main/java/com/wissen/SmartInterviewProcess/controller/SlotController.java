@@ -26,7 +26,7 @@ import javassist.NotFoundException;
 
 @RestController
 @RequestMapping("/api/interviewers")
-@CrossOrigin({"*"})
+@CrossOrigin(origins = "*")
 public class SlotController {
 
 	@Autowired

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wissen.SmartInterviewProcess.dto.FeedbackDTO;
-import com.wissen.SmartInterviewProcess.dto.ScheduleSlotDTO;
+import com.wissen.SmartInterviewProcess.dto.ScheduleRequestDTO;
 import com.wissen.SmartInterviewProcess.models.ScheduleSlot;
 import com.wissen.SmartInterviewProcess.repository.InterviewerRepository;
 import com.wissen.SmartInterviewProcess.repository.ScheduleSlotRepository;
@@ -53,15 +53,15 @@ public class FeedbackService {
 			feedbackDTO.setFeedback(scheduledInterview.getFeedback());
 			feedbackDTO.setStatus(scheduledInterview.getStatus());
 			
-			feedbackDTO.setScheduleSlotDTO(new ScheduleSlotDTO());
+			feedbackDTO.setScheduleRequestDTO(new ScheduleRequestDTO());
 			
-			feedbackDTO.getScheduleSlotDTO().setHrId(scheduledInterview.getHr().getId());
-			feedbackDTO.getScheduleSlotDTO().setInterviewerId(scheduledInterview.getInterviewer().getId());
-			feedbackDTO.getScheduleSlotDTO().setSlotId(scheduledInterview.getSlot().getId());
-			feedbackDTO.getScheduleSlotDTO().setCandidate(scheduledInterview.getCandidate());
-			feedbackDTO.getScheduleSlotDTO().setLevelId(scheduledInterview.getLevel().getId());
-			feedbackDTO.getScheduleSlotDTO().setTechnology(scheduledInterview.gettechnology().getId());
-			feedbackDTO.getScheduleSlotDTO().setInterviewDescription(scheduledInterview.getInterviewDescription());
+			feedbackDTO.getScheduleRequestDTO().setHrId(scheduledInterview.getHr().getId());
+			feedbackDTO.getScheduleRequestDTO().setInterviewerId(scheduledInterview.getInterviewer().getId());
+			feedbackDTO.getScheduleRequestDTO().setSlotId(scheduledInterview.getSlot().getId());
+			feedbackDTO.getScheduleRequestDTO().setCandidate(scheduledInterview.getCandidate());
+			feedbackDTO.getScheduleRequestDTO().setLevelId(scheduledInterview.getLevel().getId());
+			feedbackDTO.getScheduleRequestDTO().setTechnology(scheduledInterview.gettechnology().getId());
+			feedbackDTO.getScheduleRequestDTO().setInterviewDescription(scheduledInterview.getInterviewDescription());
 			
 			return feedbackDTO;
 		}).collect(Collectors.toList());

@@ -6,7 +6,8 @@ public class ScheduleResponseDTO {
 
 	private long scheduleID;
 	private SlotDTO slot;
-
+	private long interviewerId;
+	
 	private String interviewerName;
 	private String level;
 	private String technology;
@@ -14,6 +15,14 @@ public class ScheduleResponseDTO {
 	private Candidate candidate;
 
 	private String interviewDescription;
+
+	public long getInterviewerId() {
+		return interviewerId;
+	}
+
+	public void setInterviewerId(long interviewerId) {
+		this.interviewerId = interviewerId;
+	}
 
 	public long getScheduleID() {
 		return scheduleID;

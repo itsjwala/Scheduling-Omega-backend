@@ -1,11 +1,13 @@
 package com.wissen.SmartInterviewProcess.controller;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +26,7 @@ import javassist.NotFoundException;
 
 @RestController
 @RequestMapping("/api/interviewers")
+@CrossOrigin({"*"})
 public class SlotController {
 
 	@Autowired
@@ -50,7 +53,7 @@ public class SlotController {
 			return new ResponseEntity<>("Invalid time range", HttpStatus.BAD_REQUEST);
 		}
 		
-		List<AvailableSlotForScheduleDTO> body = availableSlotService.getSlotsBetween(LocalDateTime.parse(from), LocalDateTime.parse(to));
+		List<AvailableSlotForScheduleDTO> body = availableSlotService.getSlotsBetween(LocalDateTime.parse(from,DateTimeFormatter.ISO_DATE_TIME), LocalDateTime.parse(to,DateTimeFormatter.ISO_DATE_TIME));
 		
 		return new ResponseEntity<List<AvailableSlotForScheduleDTO>>(body, HttpStatus.OK);
 	}
@@ -77,7 +80,7 @@ public class SlotController {
 		
 		List<AvailableSlotDTO> body;
 		try {
-			body = availableSlotService.getSlotsBetween(id, LocalDateTime.parse(from), LocalDateTime.parse(to));
+			body = availableSlotService.getSlotsBetween(id, LocalDateTime.parse(from,DateTimeFormatter.ISO_DATE_TIME), LocalDateTime.parse(to,DateTimeFormatter.ISO_DATE_TIME));
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}

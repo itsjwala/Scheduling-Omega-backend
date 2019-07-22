@@ -10,7 +10,7 @@ public class ScheduleRequestDTO {
 	private String interviewDescription;
 	private Candidate candidate;
 
-	private long technology;
+	private long technologyId;
 
 	private long levelId;
 
@@ -54,12 +54,12 @@ public class ScheduleRequestDTO {
 		this.candidate = candidate;
 	}
 
-	public long getTechnology() {
-		return technology;
+	public long getTechnologyId() {
+		return technologyId;
 	}
 
-	public void setTechnology(long technology) {
-		this.technology = technology;
+	public void setTechnology(long technologyId) {
+		this.technologyId = technologyId;
 	}
 
 	public long getLevelId() {
@@ -73,8 +73,8 @@ public class ScheduleRequestDTO {
 	@Override
 	public String toString() {
 		return "ScheduleSlotDTO [slotId=" + slotId + ", interviewerId=" + interviewerId + ", hrId=" + hrId
-				+ ", interviewDescription=" + interviewDescription + ", candidate=" + candidate + ", technology="
-				+ technology + ", levelId=" + levelId + "]";
+				+ ", interviewDescription=" + interviewDescription + ", candidate=" + candidate + ", technologyId="
+				+ technologyId + ", levelId=" + levelId + "]";
 	}
 
 }

@@ -1,11 +1,13 @@
 package com.wissen.SmartInterviewProcess.controller;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +24,7 @@ import javassist.NotFoundException;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin({"*"})
 public class ScheduleController {
 
 	@Autowired
@@ -49,7 +52,7 @@ public class ScheduleController {
 		
 		List<ScheduleResponseDTO> body;
 		try {
-			body = scheduleSlotService.getScheduleBetweenForHr(id, LocalDateTime.parse(from), LocalDateTime.parse(to));
+			body = scheduleSlotService.getScheduleBetweenForHr(id, LocalDateTime.parse(from,DateTimeFormatter.ISO_DATE_TIME), LocalDateTime.parse(to,DateTimeFormatter.ISO_DATE_TIME));
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
@@ -64,7 +67,7 @@ public class ScheduleController {
 		
 		List<ScheduleResponseDTO> body;
 		try {
-			body = scheduleSlotService.getScheduleBetweenForInterviewer(id, LocalDateTime.parse(from), LocalDateTime.parse(to));
+			body = scheduleSlotService.getScheduleBetweenForInterviewer(id, LocalDateTime.parse(from,DateTimeFormatter.ISO_DATE_TIME), LocalDateTime.parse(to,DateTimeFormatter.ISO_DATE_TIME));
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}

@@ -78,9 +78,9 @@ public class ScheduleSlotService {
 
 		scheduleSlot.setLevel(level);
 
-		Technology technology = technologyRepository.findById(scheduleSlotDTO.getTechnology()).orElseThrow(() -> {
+		Technology technology = technologyRepository.findById(scheduleSlotDTO.getTechnologyId()).orElseThrow(() -> {
 
-			return new NotFoundException("Technology not found with id :" + scheduleSlotDTO.getTechnology());
+			return new NotFoundException("Technology not found with id :" + scheduleSlotDTO.getTechnologyId());
 		});
 
 		scheduleSlot.settechnology(technology);
@@ -89,7 +89,8 @@ public class ScheduleSlotService {
 
 			return new NotFoundException("Slot not found with id :" + scheduleSlotDTO.getSlotId());
 		});
-
+		availableSlot.setScheduled(true);
+		availableSlotRepository.save(availableSlot);
 		scheduleSlot.setSlot(availableSlot);
 
 		scheduleSlot.setInterviewDescription(scheduleSlotDTO.getInterviewDescription());
@@ -101,6 +102,7 @@ public class ScheduleSlotService {
 		response.setCandidate(scheduled.getCandidate());
 		response.setInterviewDescription(scheduled.getInterviewDescription());
 		response.setInterviewerName(interviewer.getEmp().getName());
+		response.setInterviewerId(interviewer.getId());
 		response.setLevel(level.getLevel());
 		response.setTechnology(technology.getTechnology());
 		response.setScheduleID(scheduled.getId());
@@ -123,6 +125,7 @@ public class ScheduleSlotService {
 			response.setCandidate(scheduled.getCandidate());
 			response.setInterviewDescription(scheduled.getInterviewDescription());
 			response.setInterviewerName(scheduled.getInterviewer().getEmp().getName());
+			response.setInterviewerId(scheduled.getInterviewer().getId());
 			response.setLevel(scheduled.getLevel().getLevel());
 			response.setTechnology(scheduled.gettechnology().getTechnology());
 			response.setScheduleID(scheduled.getId());
@@ -146,6 +149,7 @@ public class ScheduleSlotService {
 			response.setCandidate(scheduled.getCandidate());
 			response.setInterviewDescription(scheduled.getInterviewDescription());
 			response.setInterviewerName(scheduled.getInterviewer().getEmp().getName());
+			response.setInterviewerId(scheduled.getInterviewer().getId());
 			response.setLevel(scheduled.getLevel().getLevel());
 			response.setTechnology(scheduled.gettechnology().getTechnology());
 			response.setScheduleID(scheduled.getId());

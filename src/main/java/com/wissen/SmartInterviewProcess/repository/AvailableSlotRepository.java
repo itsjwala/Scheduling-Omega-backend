@@ -16,7 +16,7 @@ public interface AvailableSlotRepository extends JpaRepository<AvailableSlot, Lo
 
 	public List<AvailableSlot> findByActiveTrue();
 
-	@Query("select e from AvailableSlot e where e.fromTimestamp >= :from and e.toTimestamp<= :to and e.interviewer.id = :interviewer_id and active= :active")
+	@Query("select e from AvailableSlot e where e.fromTimestamp >= :from and e.toTimestamp<= :to and e.interviewer.id = :interviewer_id and e.scheduled = 0 and e.active= :active")
 	public List<AvailableSlot> getAllBetweenByInterviewer(@Param("from") LocalDateTime fromt,
 			@Param("to") LocalDateTime tot, @Param("interviewer_id") long interviewerId,@Param("active") boolean active);
 

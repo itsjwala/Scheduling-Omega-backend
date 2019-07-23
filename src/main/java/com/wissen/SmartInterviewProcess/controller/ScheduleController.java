@@ -32,10 +32,10 @@ public class ScheduleController {
 
 	@Autowired
 	ScheduleSlotService scheduleSlotService;
-	
+
 	@Autowired
 	MailService mailService;
-	
+
 	@PostMapping("/hrs/{id}/schedules")
 	private ResponseEntity<?> addSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDTO scheduleSlotDTO) {
 		System.out.println(scheduleSlotDTO);
@@ -45,14 +45,15 @@ public class ScheduleController {
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
-		
+
 		String subject = "New Interview Scheduled on" + responseBody.getSlot().getFrom().toString();
-		String mailBody = "A new interview has been scheduled on " + responseBody.getSlot().getFrom().toString() + " with " + responseBody.getCandidate().toString();
+		String mailBody = "A new interview has been scheduled on " + responseBody.getSlot().getFrom().toString()
+				+ " with " + responseBody.getCandidate().toString();
 		String to[] = scheduleSlotService.mailTo(scheduleSlotDTO.getInterviewerId(), scheduleSlotDTO.getHrId());
 		mailService.sendSchedulingMail(to, subject, mailBody);
-		
+
 		return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
-		
+
 	}
 
 	@GetMapping("/hrs/{id}/schedules")
@@ -70,8 +71,7 @@ public class ScheduleController {
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
-		
-		
+
 		return new ResponseEntity<>(body, HttpStatus.OK);
 	}
 
@@ -109,7 +109,7 @@ public class ScheduleController {
 		}
 		return ResponseEntity.ok("");
 	}
-	
+
 	@DeleteMapping("/hrs/{id}/schedules/{scheduleId}")
 	private ResponseEntity<?> deleteScheduleByHr(@PathVariable("scheduleId") Long scheduleId,
 			@RequestBody CancelDTO cancelDTO) {
@@ -125,7 +125,6 @@ public class ScheduleController {
 
 		}
 		return ResponseEntity.ok("");
-	}	
-	
+	}
 
 }

@@ -27,6 +27,10 @@ public class ScheduleSlot {
 	@JoinColumn(name = "interviewer_id")
 	private Interviewer interviewer;
 
+	@ManyToOne
+	@JoinColumn(name = "emp_id")
+	private Employee scheduleCanceller;
+
 	private String interviewDescription;
 
 	private boolean cancelled = false;
@@ -79,6 +83,14 @@ public class ScheduleSlot {
 
 	public void setInterviewer(Interviewer interviewer) {
 		this.interviewer = interviewer;
+	}
+
+	public Employee getScheduleCanceller() {
+		return scheduleCanceller;
+	}
+
+	public void setScheduleCanceller(Employee scheduleCanceller) {
+		this.scheduleCanceller = scheduleCanceller;
 	}
 
 	public String getInterviewDescription() {
@@ -145,21 +157,21 @@ public class ScheduleSlot {
 		this.level = level;
 	}
 
-
-	public Technology gettechnology() {
+	public Technology getTechnology() {
 		return technology;
 	}
 
-	public void settechnology(Technology technology) {
+	public void setTechnology(Technology technology) {
 		this.technology = technology;
 	}
 
 	@Override
 	public String toString() {
 		return "ScheduleSlot [id=" + id + ", slot=" + slot + ", hr=" + hr + ", interviewer=" + interviewer
-				+ ", interviewDescription=" + interviewDescription + ", cancelled=" + cancelled
-				+ ", cancellationReason=" + cancellationReason + ", feedback=" + feedback + ", candidate=" + candidate
-				+ ", active=" + active + ", status=" + status + ", level=" + level + ", technology=" + technology + "]";
+				+ ", scheduleCanceller=" + scheduleCanceller + ", interviewDescription=" + interviewDescription
+				+ ", cancelled=" + cancelled + ", cancellationReason=" + cancellationReason + ", feedback=" + feedback
+				+ ", candidate=" + candidate + ", active=" + active + ", status=" + status + ", level=" + level
+				+ ", technology=" + technology + "]";
 	}
 
 }

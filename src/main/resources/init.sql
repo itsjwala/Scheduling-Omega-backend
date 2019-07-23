@@ -20,7 +20,7 @@ create table interviewer (id bigint not null, primary key (id)) engine=InnoDB;
 create table interviewer_levels (interviewer_id bigint not null, levels_id bigint not null) engine=InnoDB;
 create table interviewer_technologies (interviewer_id bigint not null, technologies_id bigint not null) engine=InnoDB;
 create table level (id bigint not null AUTO_INCREMENT, level varchar(255), primary key (id)) engine=InnoDB;
-create table schedule_slot (id bigint not null AUTO_INCREMENT, cancellation_reason varchar(255), cancelled bit default 0,status integer default 0,feedback varchar(255), interview_description varchar(255), candidate_id bigint, hr_id bigint, interviewer_id bigint, slot_id bigint,level_id bigint(20),technology_id bigint(20),active bit default 1, primary key (id)) engine=InnoDB;
+create table schedule_slot (id bigint not null AUTO_INCREMENT, cancellation_reason varchar(255), cancelled bit default 0,status integer default 0,feedback varchar(255), interview_description varchar(255), candidate_id bigint, hr_id bigint, interviewer_id bigint, slot_id bigint,level_id bigint(20),technology_id bigint(20), emp_id bigint,active bit default 1, primary key (id)) engine=InnoDB;
 create table technology (id bigint not null AUTO_INCREMENT, technology varchar(255), primary key (id)) engine=InnoDB;
 alter table level add constraint UK_blg2y05fyk7ri0xragjn8ypu4 unique (level);
 alter table technology add constraint UK_317pgmod8mshudr7jmpn0e66i unique (technology);
@@ -36,3 +36,4 @@ alter table schedule_slot add constraint FK1gvh4jd33gmuh8iabisf9kqdr foreign key
 alter table schedule_slot add constraint FKexydkhbx4xnjvaobfu5dtgyxx foreign key (slot_id) references available_slot (id) ;
 alter table schedule_slot add constraint FK6ry4ayib5uu3dap126yqt3ol8 foreign key (technology_id) references technology (id);
 alter table schedule_slot add constraint FKbcms0lo2uguad1ksef86farft foreign key (level_id) references level (id);
+alter table schedule_slot add constraint FK11qi25rx553n1rtf6t5gmxuft foreign key (emp_id) references employee (id);

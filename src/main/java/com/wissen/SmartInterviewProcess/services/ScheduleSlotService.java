@@ -96,8 +96,17 @@ public class ScheduleSlotService {
 		scheduleSlot.setCandidate(candidate);
 
 		ScheduleSlot scheduled = scheduleSlotRepository.save(scheduleSlot);
+		ScheduleResponseDTO response = new ScheduleResponseDTO();
 
-		return setFieldsResponseDTO(scheduled);
+		response.setCandidate(scheduled.getCandidate());
+		response.setInterviewDescription(scheduled.getInterviewDescription());
+		response.setInterviewerName(scheduled.getInterviewer().getEmp().getName());
+		response.setInterviewerId(scheduled.getInterviewer().getId());
+		response.setLevel(scheduled.getLevel().getLevel());
+		response.setTechnology(scheduled.getTechnology().getTechnology());
+		response.setScheduleID(scheduled.getId());
+		response.setSlot(new SlotDTO(scheduled.getSlot().getFromTimestamp(), scheduled.getSlot().getToTimestamp()));
+		return response;
 	}
 
 	@Transactional(readOnly = true)

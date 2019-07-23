@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wissen.SmartInterviewProcess.dto.InterviewerDTO;
 import com.wissen.SmartInterviewProcess.models.Interviewer;
 import com.wissen.SmartInterviewProcess.services.InterviewService;
+import com.wissen.SmartInterviewProcess.services.MailService;
 
 @RestController
 @RequestMapping("/api/employees/interviewers")
@@ -24,9 +25,18 @@ public class InterviewerController {
 	@Autowired
 	InterviewService interviewService;
 	
+	@Autowired
+	MailService mailService;
+	
+	
 	@PostMapping
 	private ResponseEntity<Interviewer> addInterviewer(@RequestBody InterviewerDTO interviewerDTO) {
-		return new ResponseEntity<Interviewer>(interviewService.addInterviewer(interviewerDTO), HttpStatus.OK);
+		Interviewer newInterviewer = interviewService.addInterviewer(interviewerDTO);
+		
+		String mailBody = "New interviewer " + interviewerDTO.getEmp().getName() + " with Wissen ID " + interviewerDTO.getEmp().getWissenId() + " has registered.";
+		mailService.sendMail(interviewerDTO.getEmp().getEmail(), "New Employee Registered", mailBody);
+		
+		return new ResponseEntity<Interviewer>(newInterviewer, HttpStatus.OK);
 	}
 	
 	@GetMapping

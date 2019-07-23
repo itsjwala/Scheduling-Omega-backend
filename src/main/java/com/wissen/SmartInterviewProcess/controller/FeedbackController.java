@@ -51,7 +51,6 @@ public class FeedbackController {
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
-		mailService.sendMail();
 
 		return new ResponseEntity<>(body, HttpStatus.OK);
 	}

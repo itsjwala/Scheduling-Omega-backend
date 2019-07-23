@@ -129,6 +129,14 @@ public class ScheduleSlotService {
 	}
 
 	
+	@Transactional
+	public String[] mailTo(Long interviewerId, Long hrId) {
+		String interviewerEmail = interviewerRepository.findById(interviewerId).get().getEmp().getEmail();
+		String hrEmail = employeeRepository.findById(hrId).get().getEmail();
+		
+		return new String[]{interviewerEmail, hrEmail};
+	}
+	
 	public ScheduleResponseDTO setFieldsResponseDTO(ScheduleSlot scheduled) {
 		ScheduleResponseDTO response = new ScheduleResponseDTO();
 

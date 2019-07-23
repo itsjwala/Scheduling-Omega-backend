@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wissen.SmartInterviewProcess.dto.ScheduleRequestDTO;
 import com.wissen.SmartInterviewProcess.dto.ScheduleResponseDTO;
+import com.wissen.SmartInterviewProcess.services.MailService;
 import com.wissen.SmartInterviewProcess.services.ScheduleSlotService;
 
 import javassist.NotFoundException;
@@ -30,17 +31,25 @@ public class ScheduleController {
 	@Autowired
 	ScheduleSlotService scheduleSlotService;
 	
+	@Autowired
+	MailService mailService;
+	
 	@PostMapping("/hrs/{id}/schedules")
 	private ResponseEntity<?> addSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDTO scheduleSlotDTO) {
 		System.out.println(scheduleSlotDTO);
-		ScheduleResponseDTO body = null;
+		ScheduleResponseDTO responseBody = null;
 		try {
-			body = scheduleSlotService.scheduleInterview(scheduleSlotDTO);
+			responseBody = scheduleSlotService.scheduleInterview(scheduleSlotDTO);
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<>(body, HttpStatus.CREATED);
+		String subject = "New Interview Scheduled on" + responseBody.getSlot().getFrom().toString();
+		String mailBody = "A new interview has been scheduled on " + responseBody.getSlot().getFrom().toString() + " with " + responseBody.getCandidate().toString();
+		String to[] = scheduleSlotService.mailTo(scheduleSlotDTO.getInterviewerId(), scheduleSlotDTO.getHrId());
+		mailService.sendSchedulingMail(to, subject, mailBody);
+		
+		return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
 		
 	}
 	
@@ -56,6 +65,8 @@ public class ScheduleController {
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
+		
+		
 		return new ResponseEntity<>(body, HttpStatus.OK);
 	}
 	

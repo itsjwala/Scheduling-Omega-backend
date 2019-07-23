@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wissen.SmartInterviewProcess.dto.EmployeeDTO;
 import com.wissen.SmartInterviewProcess.models.Employee;
 import com.wissen.SmartInterviewProcess.services.EmployeeService;
+import com.wissen.SmartInterviewProcess.services.MailService;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -24,11 +25,18 @@ public class EmployeeController {
 	@Autowired
 	EmployeeService employeeService;
 	
+	@Autowired
+	MailService mailService;
+	
 	@PostMapping
 	private ResponseEntity<?> addEmployee(@RequestBody EmployeeDTO employeeDTO) {
 		employeeService.addEmployee(employeeDTO);
-		String body = "{\"token\": \"jashashdn1.1212h2haa.12312sdfsdfds\"}";
-		return new ResponseEntity<>(body, HttpStatus.OK);
+		
+		String mailBody = "New employee " + employeeDTO.getName() + " with Wissen ID " + employeeDTO.getWissenId() + " has registered.";
+		mailService.sendMail(employeeDTO.getEmail(), "New Employee Registered", mailBody);
+		
+		String responseBody = "{\"token\": \"jashashdn1.1212h2haa.12312sdfsdfds\"}";
+		return new ResponseEntity<>(responseBody, HttpStatus.OK);
 	}
 	
 	@GetMapping

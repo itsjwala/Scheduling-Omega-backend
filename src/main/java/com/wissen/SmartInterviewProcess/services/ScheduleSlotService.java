@@ -56,8 +56,6 @@ public class ScheduleSlotService {
 
 		ScheduleSlot scheduleSlot = new ScheduleSlot();
 
-		ScheduleResponseDTO response = new ScheduleResponseDTO();
-
 		Employee hr = employeeRepository.findById(scheduleSlotDTO.getHrId()).orElseThrow(() -> {
 
 			return new NotFoundException("Hr not found with id :" + scheduleSlotDTO.getHrId());
@@ -99,16 +97,7 @@ public class ScheduleSlotService {
 
 		ScheduleSlot scheduled = scheduleSlotRepository.save(scheduleSlot);
 
-		response.setCandidate(scheduled.getCandidate());
-		response.setInterviewDescription(scheduled.getInterviewDescription());
-		response.setInterviewerName(interviewer.getEmp().getName());
-		response.setInterviewerId(interviewer.getId());
-		response.setLevel(level.getLevel());
-		response.setTechnology(technology.getTechnology());
-		response.setScheduleID(scheduled.getId());
-		response.setSlot(new SlotDTO(availableSlot.getFromTimestamp(), availableSlot.getToTimestamp()));
-
-		return response;
+		return setFieldsResponseDTO(scheduled);
 	}
 
 	@Transactional(readOnly = true)
@@ -120,18 +109,8 @@ public class ScheduleSlotService {
 		});
 
 		return scheduleSlotRepository.getAllBetweenByHr(id, from, to, false, true).stream().map(scheduled -> {
-			ScheduleResponseDTO response = new ScheduleResponseDTO();
 
-			response.setCandidate(scheduled.getCandidate());
-			response.setInterviewDescription(scheduled.getInterviewDescription());
-			response.setInterviewerName(scheduled.getInterviewer().getEmp().getName());
-			response.setInterviewerId(scheduled.getInterviewer().getId());
-			response.setLevel(scheduled.getLevel().getLevel());
-			response.setTechnology(scheduled.gettechnology().getTechnology());
-			response.setScheduleID(scheduled.getId());
-			response.setSlot(new SlotDTO(scheduled.getSlot().getFromTimestamp(), scheduled.getSlot().getToTimestamp()));
-
-			return response;
+			return setFieldsResponseDTO(scheduled);
 		}).collect(Collectors.toList());
 	}
 
@@ -144,20 +123,24 @@ public class ScheduleSlotService {
 		});
 
 		return scheduleSlotRepository.getAllBetweenByInterviewer(id, from, to, false, true).stream().map(scheduled -> {
-			ScheduleResponseDTO response = new ScheduleResponseDTO();
-
-			response.setCandidate(scheduled.getCandidate());
-			response.setInterviewDescription(scheduled.getInterviewDescription());
-			response.setInterviewerName(scheduled.getInterviewer().getEmp().getName());
-			response.setInterviewerId(scheduled.getInterviewer().getId());
-			response.setLevel(scheduled.getLevel().getLevel());
-			response.setTechnology(scheduled.gettechnology().getTechnology());
-			response.setScheduleID(scheduled.getId());
-			response.setSlot(new SlotDTO(scheduled.getSlot().getFromTimestamp(), scheduled.getSlot().getToTimestamp()));
-
-			return response;
-
+			
+			return setFieldsResponseDTO(scheduled);
 		}).collect(Collectors.toList());
 	}
 
+	
+	public ScheduleResponseDTO setFieldsResponseDTO(ScheduleSlot scheduled) {
+		ScheduleResponseDTO response = new ScheduleResponseDTO();
+
+		response.setCandidate(scheduled.getCandidate());
+		response.setInterviewDescription(scheduled.getInterviewDescription());
+		response.setInterviewerName(scheduled.getInterviewer().getEmp().getName());
+		response.setInterviewerId(scheduled.getInterviewer().getId());
+		response.setLevel(scheduled.getLevel().getLevel());
+		response.setTechnology(scheduled.gettechnology().getTechnology());
+		response.setScheduleID(scheduled.getId());
+		response.setSlot(new SlotDTO(scheduled.getSlot().getFromTimestamp(), scheduled.getSlot().getToTimestamp()));
+		
+		return response;
+	}
 }

@@ -27,8 +27,8 @@ public class EmployeeController {
 	@PostMapping
 	private ResponseEntity<?> addEmployee(@RequestBody EmployeeDTO employeeDTO) {
 		employeeService.addEmployee(employeeDTO);
-		
-		return new ResponseEntity<>(HttpStatus.OK);
+		String body = "{\"token\": \"jashashdn1.1212h2haa.12312sdfsdfds\"}";
+		return new ResponseEntity<>(body, HttpStatus.OK);
 	}
 	
 	@GetMapping

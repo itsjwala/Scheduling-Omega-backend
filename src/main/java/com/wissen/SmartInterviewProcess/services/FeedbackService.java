@@ -60,7 +60,7 @@ public class FeedbackService {
 			feedbackDTO.getScheduleRequestDTO().setSlotId(scheduledInterview.getSlot().getId());
 			feedbackDTO.getScheduleRequestDTO().setCandidate(scheduledInterview.getCandidate());
 			feedbackDTO.getScheduleRequestDTO().setLevelId(scheduledInterview.getLevel().getId());
-			feedbackDTO.getScheduleRequestDTO().setTechnology(scheduledInterview.gettechnology().getId());
+			feedbackDTO.getScheduleRequestDTO().setTechnology(scheduledInterview.getTechnology().getId());
 			feedbackDTO.getScheduleRequestDTO().setInterviewDescription(scheduledInterview.getInterviewDescription());
 			
 			return feedbackDTO;

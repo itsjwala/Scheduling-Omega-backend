@@ -154,7 +154,8 @@ public class ScheduleSlotService {
 	}
 
 	@Transactional
-	public void cancelScheduleInterviewByInterviewer(long scheduleId, String cancellationReason) throws NotFoundException {
+	public void cancelScheduleInterviewByInterviewer(long scheduleId, String cancellationReason)
+			throws NotFoundException {
 
 		ScheduleSlot scheduleSlot = scheduleSlotRepository.findById(scheduleId).orElseThrow(() -> {
 
@@ -170,8 +171,7 @@ public class ScheduleSlotService {
 		scheduleSlotRepository.save(scheduleSlot);
 
 	}
-	
-	
+
 	@Transactional
 	public AvailableSlotForScheduleDTO cancelScheduleInterviewByHr(long scheduleId, String cancellationReason) throws NotFoundException {
 
@@ -181,7 +181,7 @@ public class ScheduleSlotService {
 		});
 
 		scheduleSlot.getSlot().setScheduled(false);
-		
+
 		scheduleSlot.setCancelled(true);
 
 		scheduleSlot.setCancellationReason(cancellationReason);
@@ -222,5 +222,13 @@ public class ScheduleSlotService {
 		return response;
 	}
 	
+
+	@Transactional
+	public String[] mailTo(Long interviewerId, Long hrId) {
+		String interviewerEmail = interviewerRepository.findById(interviewerId).get().getEmp().getEmail();
+		String hrEmail = employeeRepository.findById(hrId).get().getEmail();
+
+		return new String[] { interviewerEmail, hrEmail };
+	}
 
 }

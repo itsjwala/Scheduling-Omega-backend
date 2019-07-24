@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wissen.SmartInterviewProcess.dto.AvailableSlotForScheduleDTO;
 import com.wissen.SmartInterviewProcess.dto.CancelDTO;
 import com.wissen.SmartInterviewProcess.dto.ScheduleRequestDTO;
 import com.wissen.SmartInterviewProcess.dto.ScheduleResponseDTO;
@@ -48,8 +49,8 @@ public class ScheduleController {
 		
 		String subject = "New Interview Scheduled on" + responseBody.getSlot().getFrom().toString();
 		String mailBody = "A new interview has been scheduled on " + responseBody.getSlot().getFrom().toString() + " with " + responseBody.getCandidate().toString();
-		String to[] = scheduleSlotService.mailTo(scheduleSlotDTO.getInterviewerId(), scheduleSlotDTO.getHrId());
-		mailService.sendSchedulingMail(to, subject, mailBody);
+//		String to[] = scheduleSlotService.mailTo(scheduleSlotDTO.getInterviewerId(), scheduleSlotDTO.getHrId());
+//		mailService.sendSchedulingMail(to, subject, mailBody);
 		
 		return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
 		
@@ -116,15 +117,17 @@ public class ScheduleController {
 		if (scheduleId == null)
 			return new ResponseEntity<>("Mention a schedule id", HttpStatus.BAD_REQUEST);
 
+		
 		if (cancelDTO == null)
 			return new ResponseEntity<>("Mention Cancellation reason", HttpStatus.BAD_REQUEST);
+		AvailableSlotForScheduleDTO responseBody = null;
 		try {
-			scheduleSlotService.cancelScheduleInterviewByHr(scheduleId, cancelDTO.getCancellationReason());
+			responseBody = scheduleSlotService.cancelScheduleInterviewByHr(scheduleId, cancelDTO.getCancellationReason());
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 
 		}
-		return ResponseEntity.ok("");
+		return ResponseEntity.ok(responseBody);
 	}	
 	
 

@@ -6,6 +6,8 @@ public class EmployeeDTO {
 	private String phoneNumber;
 	private String email;
 	private String wissenId;
+	private String password;
+	private String role;
 
 	public String getName() {
 		return name;
@@ -38,5 +40,23 @@ public class EmployeeDTO {
 	public void setWissenId(String wissenId) {
 		this.wissenId = wissenId;
 	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+	
+	
 
 }

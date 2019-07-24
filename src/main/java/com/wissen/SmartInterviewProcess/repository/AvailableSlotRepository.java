@@ -11,7 +11,7 @@ import com.wissen.SmartInterviewProcess.models.AvailableSlot;
 
 public interface AvailableSlotRepository extends JpaRepository<AvailableSlot, Long> {
 
-	@Query("select e from AvailableSlot e where e.fromTimestamp >= :from and e.toTimestamp<= :to and active= :active")
+	@Query("select e from AvailableSlot e where e.fromTimestamp >= :from and e.toTimestamp<= :to and active= :active and scheduled = false")
 	public List<AvailableSlot> getAllBetween(@Param("from") LocalDateTime fromt, @Param("to") LocalDateTime tot, @Param("active") boolean active);
 
 	public List<AvailableSlot> findByActiveTrue();

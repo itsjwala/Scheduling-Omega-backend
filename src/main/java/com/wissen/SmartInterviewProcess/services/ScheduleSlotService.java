@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.aspectj.weaver.patterns.ConcreteCflowPointcut.Slot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.wissen.SmartInterviewProcess.dto.AvailableSlotForScheduleDTO;
 import com.wissen.SmartInterviewProcess.dto.ScheduleRequestDTO;
 import com.wissen.SmartInterviewProcess.dto.ScheduleResponseDTO;
 import com.wissen.SmartInterviewProcess.dto.SlotDTO;
@@ -97,7 +99,7 @@ public class ScheduleSlotService {
 
 		ScheduleSlot scheduled = scheduleSlotRepository.save(scheduleSlot);
 
-		return setFieldsResponseDTO(scheduled);
+		return responseDTOFor(scheduled);
 	}
 
 	@Transactional(readOnly = true)
@@ -109,18 +111,19 @@ public class ScheduleSlotService {
 		});
 
 		return scheduleSlotRepository.getAllBetweenByHr(id, from, to, false, true).stream().map(scheduled -> {
-			ScheduleResponseDTO response = new ScheduleResponseDTO();
-
-			response.setCandidate(scheduled.getCandidate());
-			response.setInterviewDescription(scheduled.getInterviewDescription());
-			response.setInterviewerName(scheduled.getInterviewer().getEmp().getName());
-			response.setInterviewerId(scheduled.getInterviewer().getId());
-			response.setLevel(scheduled.getLevel().getLevel());
-			response.setTechnology(scheduled.getTechnology().getTechnology());
-			response.setScheduleID(scheduled.getId());
-			response.setSlot(new SlotDTO(scheduled.getSlot().getFromTimestamp(), scheduled.getSlot().getToTimestamp()));
-
-			return response;
+//			ScheduleResponseDTO response = new ScheduleResponseDTO();
+//
+//			response.setCandidate(scheduled.getCandidate());
+//			response.setInterviewDescription(scheduled.getInterviewDescription());
+//			response.setInterviewerName(scheduled.getInterviewer().getEmp().getName());
+//			response.setInterviewerId(scheduled.getInterviewer().getId());
+//			response.setLevel(scheduled.getLevel().getLevel());
+//			response.setTechnology(scheduled.getTechnology().getTechnology());
+//			response.setScheduleID(scheduled.getId());
+//			response.setSlot(new SlotDTO(scheduled.getSlot().getFromTimestamp(), scheduled.getSlot().getToTimestamp()));
+//
+//			return response;
+			return responseDTOFor(scheduled);
 		}).collect(Collectors.toList());
 	}
 
@@ -133,18 +136,19 @@ public class ScheduleSlotService {
 		});
 
 		return scheduleSlotRepository.getAllBetweenByInterviewer(id, from, to, false, true).stream().map(scheduled -> {
-			ScheduleResponseDTO response = new ScheduleResponseDTO();
+//			ScheduleResponseDTO response = new ScheduleResponseDTO();
 
-			response.setCandidate(scheduled.getCandidate());
-			response.setInterviewDescription(scheduled.getInterviewDescription());
-			response.setInterviewerName(scheduled.getInterviewer().getEmp().getName());
-			response.setInterviewerId(scheduled.getInterviewer().getId());
-			response.setLevel(scheduled.getLevel().getLevel());
-			response.setTechnology(scheduled.getTechnology().getTechnology());
-			response.setScheduleID(scheduled.getId());
-			response.setSlot(new SlotDTO(scheduled.getSlot().getFromTimestamp(), scheduled.getSlot().getToTimestamp()));
-
-			return response;
+//			response.setCandidate(scheduled.getCandidate());
+//			response.setInterviewDescription(scheduled.getInterviewDescription());
+//			response.setInterviewerName(scheduled.getInterviewer().getEmp().getName());
+//			response.setInterviewerId(scheduled.getInterviewer().getId());
+//			response.setLevel(scheduled.getLevel().getLevel());
+//			response.setTechnology(scheduled.getTechnology().getTechnology());
+//			response.setScheduleID(scheduled.getId());
+//			response.setSlot(new SlotDTO(scheduled.getSlot().getFromTimestamp(), scheduled.getSlot().getToTimestamp()));
+//
+//			return response;
+			return responseDTOFor(scheduled);
 
 		}).collect(Collectors.toList());
 	}
@@ -169,7 +173,7 @@ public class ScheduleSlotService {
 	
 	
 	@Transactional
-	public void cancelScheduleInterviewByHr(long scheduleId, String cancellationReason) throws NotFoundException {
+	public AvailableSlotForScheduleDTO cancelScheduleInterviewByHr(long scheduleId, String cancellationReason) throws NotFoundException {
 
 		ScheduleSlot scheduleSlot = scheduleSlotRepository.findById(scheduleId).orElseThrow(() -> {
 
@@ -183,10 +187,40 @@ public class ScheduleSlotService {
 		scheduleSlot.setCancellationReason(cancellationReason);
 		scheduleSlot.setScheduleCanceller(scheduleSlot.getHr());
 
-		scheduleSlotRepository.save(scheduleSlot);
+		AvailableSlot availableSlot = scheduleSlotRepository.save(scheduleSlot).getSlot();
+		
+		AvailableSlotForScheduleDTO slotForSchedule = new AvailableSlotForScheduleDTO();
 
+		slotForSchedule.setInterviewerId(availableSlot.getInterviewer().getId());
+
+		slotForSchedule.setInterviewerName(availableSlot.getInterviewer().getEmp().getName());
+
+		slotForSchedule.setLevels(availableSlot.getInterviewer().getLevels());
+
+		slotForSchedule.setScheduled(availableSlot.isScheduled());
+		slotForSchedule.setSlot(new SlotDTO(availableSlot.getFromTimestamp(), availableSlot.getToTimestamp()));
+		slotForSchedule.setSlotId(availableSlot.getId());
+		slotForSchedule.setTechnologies(availableSlot.getInterviewer().getTechnologies());
+
+		return slotForSchedule;
+		
 	}
 	
+	
+	public ScheduleResponseDTO responseDTOFor(ScheduleSlot scheduled) {
+		ScheduleResponseDTO response = new ScheduleResponseDTO();
+		
+		response.setCandidate(scheduled.getCandidate());
+		response.setInterviewDescription(scheduled.getInterviewDescription());
+		response.setInterviewerName(scheduled.getInterviewer().getEmp().getName());
+		response.setInterviewerId(scheduled.getInterviewer().getId());
+		response.setLevel(scheduled.getLevel().getLevel());
+		response.setTechnology(scheduled.getTechnology().getTechnology());
+		response.setScheduleID(scheduled.getId());
+		response.setSlot(new SlotDTO(scheduled.getSlot().getFromTimestamp(), scheduled.getSlot().getToTimestamp()));
+		
+		return response;
+	}
 	
 
 }

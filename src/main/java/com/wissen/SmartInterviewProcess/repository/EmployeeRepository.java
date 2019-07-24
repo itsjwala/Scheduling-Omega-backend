@@ -21,5 +21,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 	@Query("select e from Employee e where e.active = :active")
 	public List<Employee> findByActive(@Param("active") boolean active,Pageable page);
 	
-
+	@Query("select e from Employee e where e.email = :email")
+	public Employee findByEmail(@Param("email") String email);
 }

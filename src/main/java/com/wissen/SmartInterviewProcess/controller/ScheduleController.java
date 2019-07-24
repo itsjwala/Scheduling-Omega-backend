@@ -131,13 +131,8 @@ public class ScheduleController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 
 		}
-<<<<<<< HEAD
 		return ResponseEntity.ok(responseBody);
 	}	
 	
-=======
-		return ResponseEntity.ok("");
-	}
->>>>>>> b32e6878355567511c4fb7d38b3d909b4519b985
 
 }

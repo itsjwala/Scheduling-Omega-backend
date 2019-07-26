@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wissen.SmartInterviewProcess.dto.FeedbackDTO;
+import com.wissen.SmartInterviewProcess.dto.ScheduleFeedbackDTO;
 import com.wissen.SmartInterviewProcess.dto.ScheduleRequestDTO;
+import com.wissen.SmartInterviewProcess.dto.ScheduleResponseDTO;
+import com.wissen.SmartInterviewProcess.dto.SlotDTO;
 import com.wissen.SmartInterviewProcess.models.ScheduleSlot;
 import com.wissen.SmartInterviewProcess.repository.InterviewerRepository;
 import com.wissen.SmartInterviewProcess.repository.ScheduleSlotRepository;
@@ -24,6 +27,9 @@ public class FeedbackService {
 	
 	@Autowired
 	private InterviewerRepository interviewerRepository;
+	
+	@Autowired
+	ScheduleSlotService scheduleSlotService;
 	
 	@Transactional
 	public Long addFeedback(FeedbackDTO feedbackDTO) throws NotFoundException{
@@ -66,6 +72,25 @@ public class FeedbackService {
 			return feedbackDTO;
 		}).collect(Collectors.toList());
 
+	}
+
+	public List<ScheduleFeedbackDTO> viewFeedback(Long interviewerId) throws NotFoundException {
+		interviewerRepository.findById(interviewerId).orElseThrow(() -> {
+			return new NotFoundException("Interviewer not found with id :" + interviewerId);
+		});
+		
+		List<ScheduleResponseDTO> schedule = scheduleSlotService.allInterviewersSchedule(interviewerId);
+		
+		return schedule.stream().map(curr -> {
+			ScheduleFeedbackDTO dto = new ScheduleFeedbackDTO();
+			dto.setScheduleResponseDTO(curr);
+			ScheduleSlot scheduleSlot = scheduleSlotRepository.findById(dto.getScheduleResponseDTO().getScheduleID()).get();
+			FeedbackDTO feedbackDTO = new FeedbackDTO();
+			feedbackDTO.setFeedback(scheduleSlot.getFeedback());
+			feedbackDTO.setStatus(scheduleSlot.getStatus());
+			dto.setFeedbackDTO(feedbackDTO);
+			return dto;
+		}).collect(Collectors.toList());
 	}
 
 }

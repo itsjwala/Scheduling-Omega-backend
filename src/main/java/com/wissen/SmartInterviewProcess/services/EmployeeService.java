@@ -39,7 +39,6 @@ public class EmployeeService {
 		employee.setPhoneNumber(employeeDTO.getPhoneNumber());
 		employee.setEmail(employeeDTO.getEmail());
 		employee.setWissenId(employeeDTO.getWissenId());
-//		employee.setPassword(employeeDTO.getPassword());
 		
 		employee.setPassword(bCryptPasswordEncoder.encode(employeeDTO.getPassword()));
 		

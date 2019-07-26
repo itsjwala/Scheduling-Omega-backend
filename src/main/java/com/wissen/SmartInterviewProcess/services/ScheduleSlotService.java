@@ -52,6 +52,9 @@ public class ScheduleSlotService {
 
 	@Autowired
 	private CandidateRepository candidateRepository;
+	
+	@Autowired
+	private MailService mailService;
 
 	@Transactional
 	public ScheduleResponseDTO scheduleInterview(ScheduleRequestDTO scheduleSlotDTO) throws NotFoundException {
@@ -59,34 +62,29 @@ public class ScheduleSlotService {
 		ScheduleSlot scheduleSlot = new ScheduleSlot();
 
 		Employee hr = employeeRepository.findById(scheduleSlotDTO.getHrId()).orElseThrow(() -> {
-
 			return new NotFoundException("Hr not found with id :" + scheduleSlotDTO.getHrId());
 		});
 		scheduleSlot.setHr(hr);
 
 		Interviewer interviewer = interviewerRepository.findById(scheduleSlotDTO.getInterviewerId()).orElseThrow(() -> {
-
 			return new NotFoundException("Interviewer not found with id :" + scheduleSlotDTO.getInterviewerId());
 		});
 
 		scheduleSlot.setInterviewer(interviewer);
 
 		Level level = levelRepository.findById(scheduleSlotDTO.getLevelId()).orElseThrow(() -> {
-
 			return new NotFoundException("Level not found with id :" + scheduleSlotDTO.getLevelId());
 		});
 
 		scheduleSlot.setLevel(level);
 
 		Technology technology = technologyRepository.findById(scheduleSlotDTO.getTechnologyId()).orElseThrow(() -> {
-
 			return new NotFoundException("Technology not found with id :" + scheduleSlotDTO.getTechnologyId());
 		});
 
 		scheduleSlot.setTechnology(technology);
 
 		AvailableSlot availableSlot = availableSlotRepository.findById(scheduleSlotDTO.getSlotId()).orElseThrow(() -> {
-
 			return new NotFoundException("Slot not found with id :" + scheduleSlotDTO.getSlotId());
 		});
 		availableSlot.setScheduled(true);
@@ -106,23 +104,10 @@ public class ScheduleSlotService {
 	public List<ScheduleResponseDTO> getScheduleBetweenForHr(Long id, LocalDateTime from, LocalDateTime to)
 			throws NotFoundException {
 		employeeRepository.findById(id).orElseThrow(() -> {
-
 			return new NotFoundException("Hr not found with id :" + id);
 		});
 
 		return scheduleSlotRepository.getAllBetweenByHr(id, from, to, false, true).stream().map(scheduled -> {
-//			ScheduleResponseDTO response = new ScheduleResponseDTO();
-//
-//			response.setCandidate(scheduled.getCandidate());
-//			response.setInterviewDescription(scheduled.getInterviewDescription());
-//			response.setInterviewerName(scheduled.getInterviewer().getEmp().getName());
-//			response.setInterviewerId(scheduled.getInterviewer().getId());
-//			response.setLevel(scheduled.getLevel().getLevel());
-//			response.setTechnology(scheduled.getTechnology().getTechnology());
-//			response.setScheduleID(scheduled.getId());
-//			response.setSlot(new SlotDTO(scheduled.getSlot().getFromTimestamp(), scheduled.getSlot().getToTimestamp()));
-//
-//			return response;
 			return responseDTOFor(scheduled);
 		}).collect(Collectors.toList());
 	}
@@ -131,25 +116,11 @@ public class ScheduleSlotService {
 	public List<ScheduleResponseDTO> getScheduleBetweenForInterviewer(Long id, LocalDateTime from, LocalDateTime to)
 			throws NotFoundException {
 		interviewerRepository.findById(id).orElseThrow(() -> {
-
 			return new NotFoundException("Interviewer not found with id :" + id);
 		});
 
 		return scheduleSlotRepository.getAllBetweenByInterviewer(id, from, to, false, true).stream().map(scheduled -> {
-//			ScheduleResponseDTO response = new ScheduleResponseDTO();
-
-//			response.setCandidate(scheduled.getCandidate());
-//			response.setInterviewDescription(scheduled.getInterviewDescription());
-//			response.setInterviewerName(scheduled.getInterviewer().getEmp().getName());
-//			response.setInterviewerId(scheduled.getInterviewer().getId());
-//			response.setLevel(scheduled.getLevel().getLevel());
-//			response.setTechnology(scheduled.getTechnology().getTechnology());
-//			response.setScheduleID(scheduled.getId());
-//			response.setSlot(new SlotDTO(scheduled.getSlot().getFromTimestamp(), scheduled.getSlot().getToTimestamp()));
-//
-//			return response;
 			return responseDTOFor(scheduled);
-
 		}).collect(Collectors.toList());
 	}
 
@@ -158,7 +129,6 @@ public class ScheduleSlotService {
 			throws NotFoundException {
 
 		ScheduleSlot scheduleSlot = scheduleSlotRepository.findById(scheduleId).orElseThrow(() -> {
-
 			return new NotFoundException("schedule slot not found with id :" + scheduleId);
 		});
 
@@ -169,14 +139,16 @@ public class ScheduleSlotService {
 		scheduleSlot.setCancellationReason(cancellationReason);
 		scheduleSlot.setScheduleCanceller(scheduleSlot.getInterviewer().getEmp());
 		scheduleSlotRepository.save(scheduleSlot);
+		
+		mailService.sendCancellationMail(scheduleSlot);
 
 	}
 
 	@Transactional
-	public AvailableSlotForScheduleDTO cancelScheduleInterviewByHr(long scheduleId, String cancellationReason) throws NotFoundException {
+	public AvailableSlotForScheduleDTO cancelScheduleInterviewByHr(long scheduleId, String cancellationReason)
+			throws NotFoundException {
 
 		ScheduleSlot scheduleSlot = scheduleSlotRepository.findById(scheduleId).orElseThrow(() -> {
-
 			return new NotFoundException("schedule slot not found with id :" + scheduleId);
 		});
 
@@ -188,7 +160,7 @@ public class ScheduleSlotService {
 		scheduleSlot.setScheduleCanceller(scheduleSlot.getHr());
 
 		AvailableSlot availableSlot = scheduleSlotRepository.save(scheduleSlot).getSlot();
-		
+
 		AvailableSlotForScheduleDTO slotForSchedule = new AvailableSlotForScheduleDTO();
 
 		slotForSchedule.setInterviewerId(availableSlot.getInterviewer().getId());
@@ -202,14 +174,25 @@ public class ScheduleSlotService {
 		slotForSchedule.setSlotId(availableSlot.getId());
 		slotForSchedule.setTechnologies(availableSlot.getInterviewer().getTechnologies());
 
-		return slotForSchedule;
+		mailService.sendCancellationMail(scheduleSlot);
 		
+		return slotForSchedule;
+
 	}
 	
-	
+	public List<ScheduleResponseDTO> allInterviewersSchedule(Long id) throws NotFoundException {
+		interviewerRepository.findById(id).orElseThrow(() -> {
+			return new NotFoundException("Interviewer not found with id :" + id);
+		});
+
+		return scheduleSlotRepository.getAllByInterviewer(id, false, true).stream().map(scheduled -> {
+			return responseDTOFor(scheduled);
+		}).collect(Collectors.toList());
+	}
+
 	public ScheduleResponseDTO responseDTOFor(ScheduleSlot scheduled) {
 		ScheduleResponseDTO response = new ScheduleResponseDTO();
-		
+
 		response.setCandidate(scheduled.getCandidate());
 		response.setInterviewDescription(scheduled.getInterviewDescription());
 		response.setInterviewerName(scheduled.getInterviewer().getEmp().getName());
@@ -218,10 +201,9 @@ public class ScheduleSlotService {
 		response.setTechnology(scheduled.getTechnology().getTechnology());
 		response.setScheduleID(scheduled.getId());
 		response.setSlot(new SlotDTO(scheduled.getSlot().getFromTimestamp(), scheduled.getSlot().getToTimestamp()));
-		
+
 		return response;
 	}
-	
 
 	@Transactional
 	public String[] mailTo(Long interviewerId, Long hrId) {

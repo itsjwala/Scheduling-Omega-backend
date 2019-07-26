@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wissen.SmartInterviewProcess.dto.EmployeeDTO;
+import com.wissen.SmartInterviewProcess.jwt.JwtAuthenticationController;
+import com.wissen.SmartInterviewProcess.jwt.JwtRequest;
+import com.wissen.SmartInterviewProcess.jwt.JwtResponse;
 import com.wissen.SmartInterviewProcess.models.Employee;
 import com.wissen.SmartInterviewProcess.services.EmployeeService;
 import com.wissen.SmartInterviewProcess.services.MailService;
@@ -28,14 +31,27 @@ public class EmployeeController {
 	@Autowired
 	MailService mailService;
 	
+	@Autowired
+	JwtAuthenticationController jwtController;
+	
 	@PostMapping
 	private ResponseEntity<?> addEmployee(@RequestBody EmployeeDTO employeeDTO) {
 		employeeService.addEmployee(employeeDTO);
 		
-		String mailBody = "New employee " + employeeDTO.getName() + " with Wissen ID " + employeeDTO.getWissenId() + " has registered.";
-		mailService.sendMail(employeeDTO.getEmail(), "New Employee Registered", mailBody);
+		JwtRequest req = new JwtRequest();
+		req.setUsername(employeeDTO.getEmail());
+		req.setPassword(employeeDTO.getPassword());
 		
-		String responseBody = "{\"token\": \"jashashdn1.1212h2haa.12312sdfsdfds\"}";
+		JwtResponse responseBody = null;
+		try {
+			responseBody = jwtController.createAuthenticationTokenForRegister(req);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		mailService.sendRegisteringMail(employeeDTO);
 		return new ResponseEntity<>(responseBody, HttpStatus.OK);
 	}
 	

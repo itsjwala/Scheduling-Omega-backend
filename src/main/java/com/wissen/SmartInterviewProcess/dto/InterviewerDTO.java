@@ -41,6 +41,15 @@ public class InterviewerDTO {
 	public void setTechnologies(List<Technology> technologies) {
 		this.technologies = technologies;
 	}
+
+
+
+	@Override
+	public String toString() {
+		return "InterviewerDTO [ levels=" + levels + ", technologies=" + technologies + "]";
+	}
+	
+	
 	
 	
 

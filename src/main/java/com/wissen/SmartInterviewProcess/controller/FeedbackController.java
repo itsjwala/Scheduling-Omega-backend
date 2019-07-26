@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ import javassist.NotFoundException;
 
 @RestController
 @RequestMapping("/api/interviewers")
+@CrossOrigin(origins = "*")
 public class FeedbackController {
 
 	@Autowired
@@ -43,11 +45,22 @@ public class FeedbackController {
 		return new ResponseEntity<>(body, HttpStatus.OK);
 	}
 	
+//	@GetMapping("/{id}/schedules/feedback")
+//	private ResponseEntity<?> viewFeedback(@PathVariable Long id, @RequestParam String from, @RequestParam String to) {
+//		List<FeedbackDTO> body;
+//		try {
+//			body = feedbackService.viewFeedback(id, LocalDateTime.parse(from), LocalDateTime.parse(to));
+//		} catch (NotFoundException e) {
+//			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+//		}
+//
+//		return new ResponseEntity<>(body, HttpStatus.OK);
+//	}
 	@GetMapping("/{id}/schedules/feedback")
-	private ResponseEntity<?> viewFeedback(@PathVariable Long id, @RequestParam String from, @RequestParam String to) {
+	private ResponseEntity<?> viewFeedback(@PathVariable Long id) {
 		List<FeedbackDTO> body;
 		try {
-			body = feedbackService.viewFeedback(id, LocalDateTime.parse(from), LocalDateTime.parse(to));
+			body = feedbackService.viewFeedback(id);
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}

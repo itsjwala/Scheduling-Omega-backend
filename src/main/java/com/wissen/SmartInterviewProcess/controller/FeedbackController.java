@@ -1,6 +1,5 @@
 package com.wissen.SmartInterviewProcess.controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wissen.SmartInterviewProcess.dto.FeedbackDTO;
+import com.wissen.SmartInterviewProcess.dto.ScheduleFeedbackDTO;
 import com.wissen.SmartInterviewProcess.services.FeedbackService;
 import com.wissen.SmartInterviewProcess.services.MailService;
 
@@ -58,9 +57,9 @@ public class FeedbackController {
 //	}
 	@GetMapping("/{id}/schedules/feedback")
 	private ResponseEntity<?> viewFeedback(@PathVariable Long id) {
-		List<FeedbackDTO> body;
+		List<ScheduleFeedbackDTO> body;
 		try {
-			body = feedbackService.viewFeedback(id);
+			body = feedbackService.viewFeedbackInterviewer(id);
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}

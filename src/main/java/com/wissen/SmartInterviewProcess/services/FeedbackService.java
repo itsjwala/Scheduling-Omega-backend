@@ -12,8 +12,8 @@ import com.wissen.SmartInterviewProcess.dto.FeedbackDTO;
 import com.wissen.SmartInterviewProcess.dto.ScheduleFeedbackDTO;
 import com.wissen.SmartInterviewProcess.dto.ScheduleRequestDTO;
 import com.wissen.SmartInterviewProcess.dto.ScheduleResponseDTO;
-import com.wissen.SmartInterviewProcess.dto.SlotDTO;
 import com.wissen.SmartInterviewProcess.models.ScheduleSlot;
+import com.wissen.SmartInterviewProcess.repository.EmployeeRepository;
 import com.wissen.SmartInterviewProcess.repository.InterviewerRepository;
 import com.wissen.SmartInterviewProcess.repository.ScheduleSlotRepository;
 
@@ -27,6 +27,9 @@ public class FeedbackService {
 	
 	@Autowired
 	private InterviewerRepository interviewerRepository;
+	
+	@Autowired
+	EmployeeRepository employeeRepository;
 	
 	@Autowired
 	ScheduleSlotService scheduleSlotService;
@@ -74,12 +77,31 @@ public class FeedbackService {
 
 	}
 
-	public List<ScheduleFeedbackDTO> viewFeedback(Long interviewerId) throws NotFoundException {
+	public List<ScheduleFeedbackDTO> viewFeedbackInterviewer(Long interviewerId) throws NotFoundException {
 		interviewerRepository.findById(interviewerId).orElseThrow(() -> {
 			return new NotFoundException("Interviewer not found with id :" + interviewerId);
 		});
 		
 		List<ScheduleResponseDTO> schedule = scheduleSlotService.allInterviewersSchedule(interviewerId);
+		
+		return schedule.stream().map(curr -> {
+			ScheduleFeedbackDTO dto = new ScheduleFeedbackDTO();
+			dto.setScheduleResponseDTO(curr);
+			ScheduleSlot scheduleSlot = scheduleSlotRepository.findById(dto.getScheduleResponseDTO().getScheduleID()).get();
+			FeedbackDTO feedbackDTO = new FeedbackDTO();
+			feedbackDTO.setFeedback(scheduleSlot.getFeedback());
+			feedbackDTO.setStatus(scheduleSlot.getStatus());
+			dto.setFeedbackDTO(feedbackDTO);
+			return dto;
+		}).collect(Collectors.toList());
+	}
+	
+	public List<ScheduleFeedbackDTO> viewFeedbackHr(Long hrId) throws NotFoundException {
+		employeeRepository.findById(hrId).orElseThrow(() -> {
+			return new NotFoundException("HR not found with id :" + hrId);
+		});
+		
+		List<ScheduleResponseDTO> schedule = scheduleSlotService.allHrsSchedule(hrId);
 		
 		return schedule.stream().map(curr -> {
 			ScheduleFeedbackDTO dto = new ScheduleFeedbackDTO();

@@ -180,6 +180,7 @@ public class ScheduleSlotService {
 
 	}
 	
+	@Transactional
 	public List<ScheduleResponseDTO> allInterviewersSchedule(Long id) throws NotFoundException {
 		interviewerRepository.findById(id).orElseThrow(() -> {
 			return new NotFoundException("Interviewer not found with id :" + id);
@@ -190,6 +191,17 @@ public class ScheduleSlotService {
 		}).collect(Collectors.toList());
 	}
 
+	@Transactional
+	public List<ScheduleResponseDTO> allHrsSchedule(Long id) throws NotFoundException {
+		employeeRepository.findById(id).orElseThrow(() -> {
+			return new NotFoundException("HR not found with id :" + id);
+		});
+
+		return scheduleSlotRepository.getAllByHr(id, false, true).stream().map(scheduled -> {
+			return responseDTOFor(scheduled);
+		}).collect(Collectors.toList());
+	}
+	
 	public ScheduleResponseDTO responseDTOFor(ScheduleSlot scheduled) {
 		ScheduleResponseDTO response = new ScheduleResponseDTO();
 

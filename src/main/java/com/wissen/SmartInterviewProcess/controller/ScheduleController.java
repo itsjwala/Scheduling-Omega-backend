@@ -132,10 +132,23 @@ public class ScheduleController {
 	}
 	
 	@GetMapping("/interviewers/{id}/schedules/previous")
-	private ResponseEntity<?> previousSchedulesFor(@PathVariable Long id) {
+	private ResponseEntity<?> previousSchedulesForInterviewer(@PathVariable Long id) {
 		List<ScheduleFeedbackDTO> responseBody = null;
 		try {
-			responseBody = feedbackService.viewFeedback(id);
+			responseBody = feedbackService.viewFeedbackInterviewer(id);
+		} catch (NotFoundException e) {
+			return new ResponseEntity<>("Interviewer ID not found", HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<>(responseBody, HttpStatus.OK);
+	}
+	
+
+	@GetMapping("/hrs/{id}/schedules/previous")
+	private ResponseEntity<?> previousSchedulesForHr(@PathVariable Long id) {
+		List<ScheduleFeedbackDTO> responseBody = null;
+		try {
+			responseBody = feedbackService.viewFeedbackHr(id);
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>("Interviewer ID not found", HttpStatus.BAD_REQUEST);
 		}

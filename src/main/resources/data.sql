@@ -3,16 +3,16 @@ insert into roles(role) values('ADMIN');
 insert into roles(role) values('HR');
 insert into roles(role) values('INTERVIEWER');
 
- insert into employee(email,name,phone_number,wissen_id,password,role_id) values('jigar.wala@wissen.com','jigar wala','8888888888','WT250','pass123',3);
- insert into employee(email,name,phone_number,wissen_id,password,role_id) values('sagar.ailani@wissen.com','sagar ailani','8888888888','WT251','pass123',3);
- insert into employee(email,name,phone_number,wissen_id,password,role_id) values('prithvi.morya@wissen.com','prithvi morya','8888888888','WT252','pass123',3);
- insert into employee(email,name,phone_number,wissen_id,password,role_id) values('anirudh.balakka@wissen.com','anirudh balakka','8888888888','WT253','pass123',3);
- insert into employee(email,name,phone_number,wissen_id,password,role_id) values('rishi.ghai@wissen.com','rishi ghai','8888888888','WT254','pass123',2);
- insert into employee(email,name,phone_number,wissen_id,password,role_id) values('suhaib.khan@wissen.com','suhaib khan','8888888888','WT255','pass123',2);
- insert into employee(email,name,phone_number,wissen_id,password,role_id) values('dheeraj.bhutani@wissen.com','dheeraj bhutani','8888888888','WT256','pass123',2);
- insert into employee(email,name,phone_number,wissen_id,password,role_id) values('nilesh.dahiphale@wissen.com','nilesh dahiphale','8888888888','WT257','pass123',2);
- insert into employee(email,name,phone_number,wissen_id,password,role_id) values('mohit.shah@wissen.com','mohit shah','8888888888','WT258','pass123',2);
- insert into employee(email,name,phone_number,wissen_id,password,role_id) values('rushabh.shah@wissen.com','rushabh shah','8888888888','WT259','pass123',2);
+ insert into employee(email,name,phone_number,wissen_id,password,role_id) values('jigar.wala@wissen.com','jigar wala','8888888888','WT250','$2a$10$H1t0yVYWVogBBpjce4b0BO3cmfGrQEXENRduW12mPcoAv1WA/waUC',3);
+ insert into employee(email,name,phone_number,wissen_id,password,role_id) values('sagar.ailani@wissen.com','sagar ailani','8888888888','WT251','$2a$10$H1t0yVYWVogBBpjce4b0BO3cmfGrQEXENRduW12mPcoAv1WA/waUC',1);
+ insert into employee(email,name,phone_number,wissen_id,password,role_id) values('prithvi.morya@wissen.com','prithvi morya','8888888888','WT252','$2a$10$H1t0yVYWVogBBpjce4b0BO3cmfGrQEXENRduW12mPcoAv1WA/waUC',3);
+ insert into employee(email,name,phone_number,wissen_id,password,role_id) values('anirudh.balakka@wissen.com','anirudh balakka','8888888888','WT253','$2a$10$H1t0yVYWVogBBpjce4b0BO3cmfGrQEXENRduW12mPcoAv1WA/waUC',3);
+ insert into employee(email,name,phone_number,wissen_id,password,role_id) values('rishi.ghai@wissen.com','rishi ghai','8888888888','WT254','$2a$10$H1t0yVYWVogBBpjce4b0BO3cmfGrQEXENRduW12mPcoAv1WA/waUC',2);
+ insert into employee(email,name,phone_number,wissen_id,password,role_id) values('suhaib.khan@wissen.com','suhaib khan','8888888888','WT255','$2a$10$H1t0yVYWVogBBpjce4b0BO3cmfGrQEXENRduW12mPcoAv1WA/waUC',2);
+ insert into employee(email,name,phone_number,wissen_id,password,role_id) values('dheeraj.bhutani@wissen.com','dheeraj bhutani','8888888888','WT256','$2a$10$H1t0yVYWVogBBpjce4b0BO3cmfGrQEXENRduW12mPcoAv1WA/waUC',2);
+ insert into employee(email,name,phone_number,wissen_id,password,role_id) values('nilesh.dahiphale@wissen.com','nilesh dahiphale','8888888888','WT257','$2a$10$H1t0yVYWVogBBpjce4b0BO3cmfGrQEXENRduW12mPcoAv1WA/waUC',2);
+ insert into employee(email,name,phone_number,wissen_id,password,role_id) values('mohit.shah@wissen.com','mohit shah','8888888888','WT258','$2a$10$H1t0yVYWVogBBpjce4b0BO3cmfGrQEXENRduW12mPcoAv1WA/waUC',2);
+ insert into employee(email,name,phone_number,wissen_id,password,role_id) values('rushabh.shah@wissen.com','rushabh shah','8888888888','WT259','$2a$10$H1t0yVYWVogBBpjce4b0BO3cmfGrQEXENRduW12mPcoAv1WA/waUC',2);
 
 select * from employee;
 

@@ -15,8 +15,8 @@ spring:
     
   mail: 
     host: smtp.gmail.com
-    username: intvwscheduler@gmail.com
-    password: qzbqseyhkdlqdkjm
+    username: youcan'tsee.me
+    password: hell no!
     port: 587
     properties:
       mail:
